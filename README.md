@@ -41,6 +41,46 @@ go get github.com/wslyyy/youtube-go
 >>> continuedVideosData, err := client.Browse(nil, nil, &continuation)
 ```
 
+## Example
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	youtube_go "github.com/wslyyy/youtube-go"
+)
+
+func main() {
+	httpClient := &http.Client{}
+
+	client, err := youtube_go.NewInnerTube(
+		httpClient,
+		"WEB",
+		"2.20230728.00.00",
+		"",   // apiKey (not required for InnerTube)
+		"",   // userAgent (optional)
+		"",   // referer (optional)
+		nil,  // locale (nil = default)
+		true, // autoPlaylists
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	query := "golang tutorial"
+
+	results, err := client.Search(&query, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%+v\n", results)
+}
+```
+
 ## Comparison with the [YouTube Data API](https://developers.google.com/youtube/v3/)
 The InnerTube API provides access to data you can't get from the Data API, however it comes at somewhat of a cost *(explained below)*.
 |                                       | This Library | YouTube Data API |
